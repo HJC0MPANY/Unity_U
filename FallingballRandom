@@ -1,0 +1,41 @@
+
+public class fallingBall : MonoBehaviour
+{
+    
+    //무한 생성을 위해서 객체를 먼 가져옴
+    public GameObject PlayerObj;
+    public GameObject monsterPrefab;
+    private float timer;
+    public float respawnTime = 2f;
+
+    void Start () {
+
+    }
+    void Update () {
+
+        //player 객체
+        PlayerObj = GameObject.Find("player-idle-1");
+        //2초 마다 생성
+        timer += Time.deltaTime;  // 1.1xx인데 거의 1초당
+
+
+        if(timer>= respawnTime ){
+          
+            //간격 수정함.
+            // 랜덤 위치  playerobj(이 게임의 player)의 x좌표로 간격 설정함. 
+            float randomInt = Random.Range(PlayerObj.transform.position.x,PlayerObj.transform.position.x+1);
+            
+            //playerobj(이 게임의 player)의 y좌표로 간격 설정함. 
+            float randomInty = Random.Range(PlayerObj.transform.position.y,PlayerObj.transform.position.y+10);
+
+            //생성
+            GameObject monster = Instantiate(monsterPrefab, new Vector3(randomInt, randomInty, 0f), Quaternion.identity);
+            Destroy(monster, 10f);
+
+            //timer 초기화
+            timer = 0f;
+
+        }
+
+    }
+}
