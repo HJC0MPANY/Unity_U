@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class player : MonoBehaviour
 {
+    //
     public Animator animator;
     public GameObject item_gr;
     public GameObject cloud;
@@ -62,6 +63,7 @@ public class player : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && count == 0)
         {
+            //왼쪽
             animator.SetTrigger("L");
             count++;
             rigid.AddForce(Vector2.up * upjumpPower, ForceMode2D.Impulse);
@@ -75,6 +77,7 @@ public class player : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0) && playPosition >= 0f)
                 {
+                    //왼쪽
                     animator.SetTrigger("L");
                     rigid.AddForce(Vector2.up * upjumpPower, ForceMode2D.Impulse);
                     rigid.AddForce(Vector2.left * jumpPower, ForceMode2D.Impulse);
@@ -82,7 +85,7 @@ public class player : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0) && playPosition <= 0f)
                 {
-                    
+                    //오른쪽
                     animator.SetTrigger("P");
                     rigid.AddForce(Vector2.up * upjumpPower, ForceMode2D.Impulse);
                     rigid.AddForce(Vector2.right * jumpPower, ForceMode2D.Impulse);
