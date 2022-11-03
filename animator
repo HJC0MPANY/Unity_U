@@ -1,0 +1,141 @@
+//Plyaer 애니메이션 코드 
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class player : MonoBehaviour
+{
+    public Animator animator;
+    public GameObject item_gr;
+    public GameObject cloud;
+
+    static public float right;
+    static public float left;
+    static public int position;
+    public float jumpPower;
+    public float upjumpPower;
+    static public bool jumpCheck;
+    float playPosition;
+
+    float playerX;
+    float playerY;
+
+    int jumpCount = 0;
+
+    bool click;
+
+    int count;
+
+    Rigidbody2D rigid;
+
+    // item
+    static public bool item1_g; 
+    static public bool fire_item = false; 
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        item1_g = false;
+
+        rigid = GetComponent<Rigidbody2D>();
+        position = 0;
+        right = 1;
+        left = 1;
+        count = 0;
+        jumpCheck = false;
+        playPosition = 0;
+
+        click = true;
+         animator =GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0) && jumpCount <= 2)
+        {
+            jumpCount += 1;
+        }
+
+        if (Input.GetMouseButtonDown(0) && count == 0)
+        {
+            animator.SetTrigger("L");
+            count++;
+            rigid.AddForce(Vector2.up * upjumpPower, ForceMode2D.Impulse);
+            rigid.AddForce(Vector2.left * jumpPower, ForceMode2D.Impulse);
+        }
+        else
+        {
+
+            if (jumpCount <= 2 && click == true)
+            {
+
+                if (Input.GetMouseButtonDown(0) && playPosition >= 0f)
+                {
+                    animator.SetTrigger("L");
+                    rigid.AddForce(Vector2.up * upjumpPower, ForceMode2D.Impulse);
+                    rigid.AddForce(Vector2.left * jumpPower, ForceMode2D.Impulse);
+                }
+
+                if (Input.GetMouseButtonDown(0) && playPosition <= 0f)
+                {
+                    
+                    animator.SetTrigger("P");
+                    rigid.AddForce(Vector2.up * upjumpPower, ForceMode2D.Impulse);
+                    rigid.AddForce(Vector2.right * jumpPower, ForceMode2D.Impulse);
+                }
+
+            }
+        }
+        if (count == 1)
+        {
+            jumpCheck = true;
+        }
+    }
+
+    public void Move()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            transform.Translate(-left, 0, 0);
+            position -= 1;
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            transform.Translate(right, 0, 0);
+            position += 1;
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D outher)
+    {
+        playPosition = transform.position.x;
+        jumpCount = 0;
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (item1_g == true)
+        {
+            item_gr.SetActive(false);
+            cloud.SetActive(true);
+        }
+        else
+        {
+            click = false;
+        }
+
+        if(fire_item == true)
+        {
+            Debug.Log("game over");
+            Time.timeScale = 0;
+            
+        }
+
+    }
+}
+
+
